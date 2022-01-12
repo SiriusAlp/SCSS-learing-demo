@@ -1,0 +1,178 @@
+/*!
+  摘自阮一峰老师的博客 https://www.ruanyifeng.com/blog/2012/06/sass.html
+*/
+$version: "1.0.0";
+
+/*
+测试注释 版本号#{$version}
+scss : css预处理器
+*/
+
+// 数组
+$list: 1px 2px 2px 3px;
+
+// 数字
+$w: 600px;
+
+// null
+$n: null;
+
+// 颜色
+$color-red: red;
+
+// 字符串
+$str: "hello world";
+$str0: "hello";
+$str1: world;
+
+.demo-div0 {
+  color: $color-red;
+  width: $w;
+} //Ding 语句用分号分割
+
+$var: 10px;
+body {
+  margin: 14px/ (2); //margin: 7px
+  margin: 14px/2; //margin: 14px/2
+  right: $var * 10;
+}
+
+// 模板字符串
+// #{$var} 可用在选择器 属性 属性值 模板字符串
+$demo: "demo";
+.#{$demo}-color {
+  // .demo-color ...
+  color: #ccc;
+  #{$demo}: $demo; // 出现在属性中时,需要用模板字符串的写法
+}
+
+//嵌套
+div h1 {
+  color: red;
+}
+//equal 2
+div {
+  h1 {
+    color: red;
+  }
+}
+
+//属性嵌套
+p {
+  border: {
+    //这个border后面必须加冒号
+    color: red;
+  }
+}
+//equal 2
+p {
+  border-color: red;
+}
+
+//父元素&
+a {
+  &:hover {
+    color: #ccc;
+  }
+}
+//equal 2
+a:hover {
+  color: #ccc;
+}
+
+//about comments
+//单行注释编译时会被忽略
+/**
+多行注释会被保留
+**/
+/*!加叹号后压缩模式下,注释也会被保留
+*/
+
+//继承@extend
+.class1 {
+  border: 1px solid #ddd;
+}
+
+.class2 {
+  @extend .class1;
+  font-size: 120%;
+}
+
+//mixin 类似C语言的宏
+@mixin left {
+  float: left;
+  margin-left: 10px;
+}
+//结合@include使用
+div {
+  @include left;
+}
+//指定缺省参数
+@mixin left($value: 10px) {
+  float: left;
+  margin-right: $value;
+}
+div {
+  @include left(20px);
+}
+
+//一个mixin使用的案例,生成浏览器前缀
+@mixin rounded($vert, $horz, $radius: 10px) {
+  border-#{$vert}-#{$horz}-radius: $radius;
+  -moz-border-radius-#{$vert}-#{$horz}: $radius;
+  -webkit-border-#{$vert}-#{$horz}-radius: $radius;
+}
+
+div {
+  @include rounded(left, top);
+}
+
+//颜色函数
+div {
+  color: lighten(#cc3, 10%);
+}
+div {
+  color: darken(#cc3, 10%);
+}
+// grayscale complement
+
+// @import命令 @import "test.css" 依然会被解析成css中的@import命令
+@import "_hello.scss";
+
+//条件语句
+p {
+  @if 1 + 1 == 2 {
+    border: 1px solid;
+  } @else {
+    background-color: #fff;
+  }
+}
+
+//循环语句
+@for $i from 1 to 10 {
+  .border-#{$i} {
+    border: #{$i}px solid blue;
+  }
+}
+//while语句
+$i: 10;
+@while $i > 0 {
+  .item-#{$i} {width: 2em * $i}
+  $i:$i - 2
+}
+
+//each 命令
+@each $member in a,b,c,d {
+  .#{$member} {
+    background-image: url("/image/#{$member}.jpg");
+  }
+}
+
+//函数
+@function double($n){
+  @return $n * 2;
+}
+
+#sidebar {
+  width: double(5px);
+}
